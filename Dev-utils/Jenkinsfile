@@ -16,13 +16,17 @@ pipeline {
             steps {
             	 sh "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 483452016940.dkr.ecr.eu-west-1.amazonaws.com"			
 		}
+        }
+	stage('build') {
             steps {
         	 sh "docker build -t goapp ."
 		}
+        }
+        stage('deploy') {
 	    steps {
 		sh "docker tag goapp:latest 483452016940.dkr.ecr.eu-west-1.amazonaws.com/goapp:latest"
 		sh "docker push 483452016940.dkr.ecr.eu-west-1.amazonaws.com/goapp:latest"
 		}
-	}
+        }
     }
 }
