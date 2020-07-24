@@ -1,9 +1,9 @@
-node('master') {
-
+node {
+  checkout scm
 }
 
 pipeline {
-    agent none
+    agent any
 
     options {
         disableConcurrentBuilds()
