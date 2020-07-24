@@ -1,0 +1,29 @@
+node('master') {
+
+}
+
+pipeline {
+    agent none
+
+    options {
+        disableConcurrentBuilds()
+        skipDefaultCheckout false
+        timeout(time: 60, unit: 'MINUTES')
+    }
+
+    stages {
+        stage('Creds') {
+            steps {
+            		aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 483452016940.dkr.ecr.eu-west-1.amazonaws.com
+			
+		}
+            steps {
+        		docker build -t goapp .
+		}
+	    steps {
+			docker tag goapp:latest 483452016940.dkr.ecr.eu-west-1.amazonaws.com/goapp:latest
+			docker push 483452016940.dkr.ecr.eu-west-1.amazonaws.com/goapp:latest
+		}
+	}
+    }
+}
